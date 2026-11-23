@@ -17,6 +17,14 @@ if (codePoints < 1 || codePoints > MAX_CHARS) {
 if (ROAST.trim() !== ROAST || ROAST.includes("\n") || ROAST.includes("\r")) {
   throw new Error("roast must be a single non-empty line with no newline characters");
 }
+// The brief asks for a roast of the entrant's own AI agent: the line must
+// name the agent, and it must land as a finished sentence.
+if (!/agent/i.test(ROAST)) {
+  throw new Error("roast must name the entrant's own AI agent");
+}
+if (!/[.!?]$/.test(ROAST)) {
+  throw new Error("roast must end with terminal punctuation");
+}
 
 const outputDir = process.env.MAKEFUN_OUTPUT_DIR ?? "/output";
 mkdirSync(outputDir, { recursive: true });
